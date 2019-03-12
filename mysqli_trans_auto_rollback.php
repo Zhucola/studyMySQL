@@ -12,8 +12,7 @@ class mysqliTransAutoRollback{
 	public $trans_debug = FALSE;
 	public $errors = [];
 
-	public function connect()
-	{
+	public function connect(){
 		$this->conn_id = mysqli_init();
 		$this->conn_id->options(MYSQLI_OPT_CONNECT_TIMEOUT, 3);
 		$this->conn_id->options(MYSQLI_INIT_COMMAND, 'SET SESSION sql_mode = CONCAT(@@sql_mode, ",", "STRICT_ALL_TABLES")');
@@ -21,19 +20,15 @@ class mysqliTransAutoRollback{
 		$this->conn_id->set_charset("utf8");
 	}
 
-	public function query($sql)
-	{
+	public function query($sql){
 		$query = $this->conn_id->query($sql);
-		if(FALSE === $query)
-		{
+		if(FALSE === $query){
 			//error和errno是上一个mysql操作的错误信息，如果执行了query错误，然后直接commit,则error和errno是commit的错误信息
 			$this->error();
-			if(TRUE === $this->trans_start)
-			{
+			if(TRUE === $this->trans_start){
 				$this->trans_status = FALSE;
 				//自动回滚
-				if(TRUE === $this->trans_debug)
-				{
+				if(TRUE === $this->trans_debug){
 					$this->trans_complete();
 					$this->displayTransError();
 				}
@@ -41,64 +36,53 @@ class mysqliTransAutoRollback{
 		}
 	}
 
-	public function trans_start()
-	{
+	public function trans_start(){
 		$this->conn_id->autocommit(FALSE);
 		version_compare(PHP_VERSION, "5.5", '>=') ? $this->conn_id->begin_transaction() : $this->conn_id->query('START TRANSACTION');
 		$this->trans_start = TRUE;
 	}
 
-	public function trans_rollback()
-	{
-		if (TRUE !== $this->trans_start)
-		{
+	public function trans_rollback(){
+		if (TRUE !== $this->trans_start){
 			return FALSE;
 		}
-		if ($this->conn_id->rollback())
-		{
+		if ($this->conn_id->rollback()){
 			$this->conn_id->autocommit(TRUE);
 			return TRUE;
 		}
 		return FALSE;
 	}
 
-	public function trans_complete()
-	{
+	public function trans_complete(){
 		//事务未开启
-		if ($this->trans_start === FALSE)
-		{
+		if ($this->trans_start === FALSE){
 			return FALSE;
 		}
 		//事务有异常query
-		if ($this->trans_status === FALSE)
-		{
+		if ($this->trans_status === FALSE){
 			$this->trans_rollback();
 			return FALSE;
 		}
-		if ($this->conn_id->commit())
-		{
+		if ($this->conn_id->commit()){
 			$this->conn_id->autocommit(TRUE);
 			return TRUE;
 		}
 		return FALSE;
 	}
 
-	public function displayTransError()
-	{
+	public function displayTransError(){
 		var_dump($this->errors);
 		die;
 	}
 
-	public function error()
-	{
+	public function error(){
 		$this->errors[] = [
 			"code"=>$this->conn_id->errno,
 			"msg"=>$this->conn_id->error
 		];
 	}
 
-	public function close()
-	{
+	public function close(){
 		$this->conn_id->close();
 	}
 }

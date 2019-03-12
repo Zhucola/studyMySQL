@@ -1,7 +1,5 @@
 <?php
 include("./mysqli_connect.php");
-$name1 = $mysqli->real_escape_string(randStr(5));
-$name2 = $mysqli->real_escape_string(randStr(5));
 $sql = "SELECT * FROM `user`";
 $result = $mysqli->query($sql);   //返回的$result是一个object
 /*

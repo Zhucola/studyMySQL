@@ -5,8 +5,7 @@ $name2 = $mysqli->real_escape_string(randStr(5));
 //$name2 = $mysqli->real_escape_string("asd\sdad");  // asd\\sdad
 $sql = "INSERT INTO `user`(name,age) VALUE('{$name1}',123),('{$name2}',99)";
 $res = $mysqli->query($sql);
-if(false === $res)
-{
+if(false === $res){
 	var_dump($mysqli->error);
 	var_dump($mysqli->errno);
 	die;

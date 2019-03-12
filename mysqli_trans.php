@@ -22,11 +22,9 @@ $sql3 = "INSERT INTO `user`(name,age) VALUE('{$name3}',3)";
 $res3 = $mysqli->query($sql3);
 $sql4 = "DELETE FROM `user` WHERE `uid` = 123"; //异常sql
 $res4 = $mysqli->query($sql4);
-if($res1 && $res2 && $res3 && $res4)
-{
+if($res1 && $res2 && $res3 && $res4){
 	$mysqli->commit();	
-}else
-{
+}else{
 	$mysqli->rollback();	
 }
 $mysqli->autocommit(TRUE);
