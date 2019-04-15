@@ -32,6 +32,7 @@ $options = [
 ];
 try{
 	$pdo = new PDO($dsn, $username, $pwd, $options);
+	$pdo->exec("SET NAMES " . $pdo->quote($charset));
 	$pdo->setAttribute(PDO::ATTR_AUTOCOMMIT,1);
 	//echo $pdo->getAttribute(PDO::ATTR_CLIENT_VERSION);  //mysqlnd 5.0.12-dev - 20150407 - $Id: b396954eeb2d1d9ed7902b8bae237b287f21ad9e $
 	//echo $pdo->getAttribute(PDO::ATTR_SERVER_VERSION); //5.6.35-log
