@@ -2,7 +2,7 @@
 $hostname = "192.168.124.10";
 $username = "root";
 $pwd = "";
-$database = "study";
+$database = "test";
 $port = 3306;
 $compress = TRUE;
 $persistent = FALSE;
