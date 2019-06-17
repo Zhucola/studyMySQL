@@ -36,6 +36,7 @@ try{
 	$pdo->setAttribute(PDO::ATTR_AUTOCOMMIT,1);
 	//echo $pdo->getAttribute(PDO::ATTR_CLIENT_VERSION);  //mysqlnd 5.0.12-dev - 20150407 - $Id: b396954eeb2d1d9ed7902b8bae237b287f21ad9e $
 	//echo $pdo->getAttribute(PDO::ATTR_SERVER_VERSION); //5.6.35-log
+	//echo $pdo->getAttribute(PDO::ATTR_DRIVER_NAME); //mysql  驱动类型
 }catch (PDOException $e){
 	var_dump($e);
 }
